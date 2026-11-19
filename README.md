@@ -167,6 +167,8 @@ Install [`scripts/sleep-config`](scripts/sleep-config) to
 
 Also install [`scripts/wifi-resume`](scripts/wifi-resume) (same directory) if
 you get dead Wi-Fi after resume — it turns off `power_save` on `wlp2s0` post-resume.
+(This is a common community snippet for brcmfmac resume issues, not original to
+this repo; adjust the interface name if yours differs.)
 
 ### Pitfalls that cost us debugging time
 
@@ -252,12 +254,26 @@ All working with mainline drivers on this unit:
 
 ---
 
-## Credits
+## Credits & attribution
 
-- [patjak/facetimehd](https://github.com/patjak/facetimehd) — camera driver
-- [id1man23/macbook12-camera-fix](https://github.com/id1man23/macbook12-camera-fix) — 12-inch camera patch
-- [leifliddy/macbook12-audio-driver](https://github.com/leifliddy/macbook12-audio-driver) — CS4208 audio driver
-- The linux-on-macbook community whose notes made this possible
+This repo is a guide plus small helper scripts; the actual drivers are other
+people's work:
+
+- [patjak/facetimehd](https://github.com/patjak/facetimehd) (GPL-2.0) — the
+  reverse-engineered camera driver this guide builds on.
+- [id1man23/macbook12-camera-fix](https://github.com/id1man23/macbook12-camera-fix)
+  (GPL-2.0) — the three patched source files (`fthd_drv.c`, `fthd_isp.c`,
+  `fthd_v4l2.c`) that make the camera work on 12-inch models.
+- [leifliddy/macbook12-audio-driver](https://github.com/leifliddy/macbook12-audio-driver)
+  (no license declared) — the CS4208 audio driver.
+  [`config/51-macbook-cs4208-softvol.conf`](config/51-macbook-cs4208-softvol.conf)
+  in this repo is reproduced **verbatim** from its `contrib/wireplumber/`
+  directory, with attribution; all rights to it remain with that author.
+- `scripts/sleep-config` — written for this project (deep-sleep + idempotent
+  wake-source handling). `scripts/wifi-resume` — a common community snippet
+  for brcmfmac dead-Wi-Fi-after-resume. `scripts/healthcheck.sh` — original to
+  this repo.
+- The linux-on-macbook community whose notes made this possible.
 
 Fixes assembled and verified on a MacBook9,1 running Manjaro, November 2026.
 Issues and corrections welcome — especially reports from MacBook8,1 (2015)
@@ -265,5 +281,9 @@ and MacBook10,1 (2017) owners.
 
 ## License
 
-MIT for the scripts and documentation in this repo. The drivers themselves
-are GPL-2.0 under their respective upstream licenses.
+MIT covers the original scripts and documentation in this repo only.
+Third-party material keeps its upstream terms: facetimehd and the camera patch
+are GPL-2.0; macbook12-audio-driver (including the reproduced softvol config)
+has no declared license — all rights remain with its author, and it is
+reproduced here with attribution for convenience. If you redistribute the
+drivers themselves, get them from upstream.
