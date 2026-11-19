@@ -1,0 +1,20 @@
+#!/bin/bash
+# MacBook 12-inch (A1534): use deep (S3) sleep. s2idle hangs on resume on this
+# machine. Keep lid-open wake (LID0) enabled; disable USB (XHC1) wake to avoid
+# instant re-wake. NOTE: writing a name to /proc/acpi/wakeup TOGGLES it,
+# so check state first.
+#
+# Install to /usr/lib/systemd/system-sleep/sleep-config (mode 755).
+# Do NOT leave executable backups in this directory — systemd-sleep runs
+# every executable file there alphabetically.
+case $1 in
+  pre)
+    echo deep > /sys/power/mem_sleep 2>/dev/null || true
+    if grep -qE '^XHC1[[:space:]].*\*enabled' /proc/acpi/wakeup; then
+      echo XHC1 > /proc/acpi/wakeup
+    fi
+    if grep -qE '^LID0[[:space:]].*\*disabled' /proc/acpi/wakeup; then
+      echo LID0 > /proc/acpi/wakeup
+    fi
+    ;;
+esac

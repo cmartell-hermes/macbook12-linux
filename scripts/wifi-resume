@@ -1,0 +1,10 @@
+#!/bin/bash
+# Fix dead Wi-Fi after resume on MacBook 12-inch (brcmfmac):
+# disable power_save post-resume. Adjust interface name if yours differs.
+# Install to /usr/lib/systemd/system-sleep/wifi-resume (mode 755).
+case $1 in
+  post)
+    sleep 2
+    /usr/bin/iw dev wlp2s0 set power_save off 2>/dev/null || true
+    ;;
+esac
